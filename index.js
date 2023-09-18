@@ -1,9 +1,12 @@
 import "dotenv/config.js";
 import express from "express";
 import "./server/src/db.js";
-import path from "path";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 import apiRouter from "./server/src/routers/apiRouter.js";
 import globalRouter from "./server/src/routers/globalRouter.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = process.env.PORT || 3000;
