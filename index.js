@@ -1,7 +1,7 @@
 import "dotenv/config.js";
 import express from "express";
 import "./server/src/db.js";
-import { dirname } from "path";
+import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import apiRouter from "./server/src/routers/apiRouter.js";
 import globalRouter from "./server/src/routers/globalRouter.js";
