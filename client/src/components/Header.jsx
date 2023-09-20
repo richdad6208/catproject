@@ -27,7 +27,9 @@ function Header() {
           <li>
             <Link to="/photos">사진구경</Link>
           </li>
-          <li>냥이자랑</li>
+          <li>
+            <Link to="/board">냥이자랑</Link>
+          </li>
           {isLoggedIn ? (
             <>
               <li>

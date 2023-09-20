@@ -6,6 +6,8 @@ import Register from "./screens/Register";
 import Login from "./screens/Login";
 import Profile from "./screens/Profile";
 import Logout from "./components/Logout";
+import Board from "./screens/Board";
+import Upload from "./screens/upload";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
           {
             path: "/logout",
             element: <Logout />,
+          },
+          {
+            path: "/board",
+            element: <Board />,
+          },
+          {
+            path: "/upload",
+            element: <Upload />,
           },
         ],
       },
