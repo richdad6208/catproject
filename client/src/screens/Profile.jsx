@@ -2,6 +2,7 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import Todo from "../components/Todo/Todo";
 
 const Wrapper = styled.div`
   .image-wrapper {
@@ -68,33 +69,40 @@ function Profile() {
     };
   }
   return (
-    <Wrapper>
-      <h2>어서오세요! {userData.userName}님 환영합니다</h2>
-      <div className="even-columns">
-        <div>
-          <div className="image-wrapper">
-            <img
-              src={userImageUrl ? userImageUrl : "/images/icon-account.svg"}
-              alt=""
-            />
+    <>
+      <Wrapper>
+        <h2>어서오세요! {userData.userName}님 환영합니다</h2>
+        <div className="even-columns">
+          <div>
+            <div className="image-wrapper">
+              <img
+                src={userImageUrl ? userImageUrl : "/images/icon-account.svg"}
+                alt=""
+              />
+            </div>
+            <form
+              onSubmit={onSubmit}
+              method="post"
+              encType="multipart/form-data"
+            >
+              <input
+                type="file"
+                name="userImage"
+                id="userImage"
+                onChange={uploadImage}
+                accept="image/*"
+              />
+              <button>프로필 사진 변경</button>
+            </form>
           </div>
-          <form onSubmit={onSubmit} method="post" encType="multipart/form-data">
-            <input
-              type="file"
-              name="userImage"
-              id="userImage"
-              onChange={uploadImage}
-              accept="image/*"
-            />
-            <button>프로필 사진 변경</button>
-          </form>
+          <div className="user__inform">
+            <p className="user__body">이메일: {userData.email}</p>
+            <p className="user__body">이름: {userData.userName}</p>
+          </div>
         </div>
-        <div className="user__inform">
-          <p className="user__body">이메일: {userData.email}</p>
-          <p className="user__body">이름: {userData.userName}</p>
-        </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
+      <Todo />
+    </>
   );
 }
 

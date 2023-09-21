@@ -13,8 +13,8 @@ const Wrapper = styled.button`
   }
 `;
 
-function Button({ content }) {
-  return <Wrapper>{content}</Wrapper>;
+function Button({ content, handler }) {
+  return <Wrapper onClick={handler}>{content}</Wrapper>;
 }
 
 export default Button;

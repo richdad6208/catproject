@@ -5,8 +5,13 @@ import bcrypt from "bcrypt";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { S3Client } from "@aws-sdk/client-s3";
-import Post from "../models/Post.js";
-import Counter from "../models/Counter.js";
+import {
+  uploadPost,
+  getPosts,
+  getDetail,
+  uploadComment,
+  getComments,
+} from "../controllers/post.js";
 
 const s3 = new S3Client({
   region: "ap-northeast-2",
@@ -103,24 +108,11 @@ apiRouter.post("/login", async (req, res) => {
 apiRouter.post("/upload/userImage", upload.single("userImage"), (req, res) => {
   console.log(req);
 });
-// upload.single("이곳에 formData 객체의 키값을 넣어야 한다")
-apiRouter.post("/posts", upload.single("file"), async (req, res) => {
-  console.log(req.file);
-  const { title, content, user } = req.body;
-  console.log(user);
-  if (!user) {
-    res
-      .status(400)
-      .json({ success: false, errorMessage: "유저를 찾을 수 없습니다" });
-  }
 
-  const post = await Post.create({
-    title,
-    content,
-    imageUrl: req.file.location,
-    user,
-  });
-  res.status(201).json({ success: true, post });
-});
+apiRouter.route("/posts").post(upload.single("file"), uploadPost).get(getPosts);
 
+apiRouter.route("/posts/:shortId").get(getDetail);
+
+apiRouter.route("/posts/:shortId/comments").post(uploadComment);
+// .get(getComments);
 export default apiRouter;

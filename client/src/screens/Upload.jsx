@@ -91,7 +91,7 @@ function Upload() {
       .then((response) => {
         if (response.data.success) {
           console.log(response.data.post);
-          navigate("/board");
+          navigate("/posts");
         } else {
           console.log(response.data.errorMessage);
         }
