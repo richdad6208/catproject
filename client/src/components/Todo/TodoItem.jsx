@@ -1,9 +1,35 @@
-import{ useState } from "react";
+import { useState } from "react";
+import styled from "styled-components";
 
-const TodoItem = ({ id, item, onDelete, onEdit, key }) => {
+const Wrapper = styled.div`
+  .todo-item {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+      rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    padding: 0.4em 0.6em;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .todo__button {
+    background: dodgerblue;
+    border: none;
+    padding: 0.2em 0.3em;
+    border-radius: 5px;
+    color: white;
+    margin-right: 10px;
+    font-size: 15px;
+    cursor: pointer;
+
+    &.warn {
+      background: crimson;
+    }
+  }
+`;
+
+const TodoItem = ({ id, item, onDelete, onEdit }) => {
   const [isEdit, setIsEdit] = useState(false);
-  console.log(key);
-
+  //key
   // 수정버튼 눌렀을때 상태 바꿔주는 함수
   const handleEditButton = () => {
     setIsEdit((isEdit) => !isEdit);
@@ -18,17 +44,25 @@ const TodoItem = ({ id, item, onDelete, onEdit, key }) => {
   };
 
   return (
-    <div className="todo-item">
-      {isEdit ? (
-        <>
-          <textarea value={item} onChange={handleChangeInputEdit} />
-        </>
-      ) : (
-        <>{item}</>
-      )}
-      <button onClick={handleEditButton}>수정</button>
-      <button onClick={handleDeleteButton}>삭제</button>
-    </div>
+    <Wrapper>
+      <div className="todo-item">
+        {isEdit ? (
+          <>
+            <textarea value={item} onChange={handleChangeInputEdit} />
+          </>
+        ) : (
+          <>{item}</>
+        )}
+        <div>
+          <button className="todo__button " onClick={handleEditButton}>
+            수정
+          </button>
+          <button className="todo__button warn" onClick={handleDeleteButton}>
+            삭제
+          </button>
+        </div>
+      </div>
+    </Wrapper>
   );
 };
 

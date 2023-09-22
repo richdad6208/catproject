@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   text-align: right;
@@ -36,9 +37,16 @@ const ImageGrid = styled.div`
 `;
 
 function Posts() {
+  const isLoggedIn = useSelector((state) => state.user.value);
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요한 서비스입니다");
+      navigate("/login");
+    }
+
     axios
       .get("/api/posts")
       .then((response) => {

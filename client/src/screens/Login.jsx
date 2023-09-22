@@ -21,6 +21,7 @@ function Login() {
         if (res.data.success) {
           dispatch(loggedIn());
           dispatch(inputUser(res.data.user));
+          console.log(res.data.user);
           setValidation("");
           navigate("/");
         } else {
@@ -31,6 +32,16 @@ function Login() {
   }
   return (
     <Wrapper>
+      <p
+        style={{
+          textAlign: "center",
+          marginInline: "auto",
+          wordBreak: "keep-all",
+        }}
+      >
+        비밀번호는 해쉬로 처리하여 안전합니다. 시연시간 15분 후 데이터베이스
+        초기화 및 서버 닫을 예정입니다.
+      </p>
       <h2>로그인</h2>
       {validation === "wrongEmail" ? (
         <p className="errorMessage">아이디가 존재하지 않습니다.</p>

@@ -25,5 +25,5 @@ app.use("/api", apiRouter);
 
 app.use((err, req, res, next) => {
   console.log(err);
-  res.json({ errMessage: err });
+  res.status(400);
 });

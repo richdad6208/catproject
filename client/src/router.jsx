@@ -8,8 +8,10 @@ import Profile from "./screens/Profile";
 import Logout from "./components/Logout";
 import Posts from "./screens/Posts";
 import Upload from "./screens/upload";
-import Detail from "./components/Detail";
+// import Detail from "./components/Detail";
 import Todo from "./components/Todo/Todo";
+import Slide from "./components/Slide/Slide";
+import Detail from "./components/Detail";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
         children: [
+          {
+            path: "/",
+            element: <Slide />,
+          },
           {
             path: "/photos",
             element: <Photo />,
@@ -33,11 +39,11 @@ const router = createBrowserRouter([
             element: <Login />,
           },
           {
-            path: "/user/:id",
+            path: "/users/:shortId",
             element: <Profile />,
             children: [
               {
-                path: "/user/:id/todo",
+                path: "/users/:shortId/todo",
                 element: <Todo />,
               },
             ],
@@ -50,6 +56,12 @@ const router = createBrowserRouter([
           {
             path: "/posts",
             element: <Posts />,
+            children: [
+              {
+                path: "/posts/:shortId",
+                element: <Detail />,
+              },
+            ],
           },
           {
             path: "/upload",

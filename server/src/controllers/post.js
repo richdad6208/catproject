@@ -25,7 +25,7 @@ export const getPosts = async (req, res) => {
 
 export const getDetail = async (req, res) => {
   const { shortId } = req.params;
-  const post = await Post.findOne({ shortId })
+  const post = await Post.findOneAndUpdate({ shortId }, { $inc: { view: 1 } })
     .populate("author")
     .populate({
       path: "comments",
@@ -59,7 +59,12 @@ export const uploadComment = async (req, res) => {
     }
   );
 
-  const post = await Post.findOne({ shortId });
+  const post = await Post.findOne({ shortId })
+    .populate("author")
+    .populate({
+      path: "comments",
+      populate: { path: "author" },
+    });
 
   res.status(201).json({ success: true, post });
 };
@@ -75,3 +80,15 @@ export const getComments = async (req, res) => {
 
   res.status(200).json({ success: true, post });
 };
+
+// export const deleteComment = async (req, res) => {
+//   const { shortId, commentId } = req.params;
+//   try {
+//     await Post.comments.id(commentId).deleteOne();
+//     const post = await Post.findOne({ shortId });
+//     res.status(200).json({ success: true, post });
+//   } catch {
+//     (err) => console.log(err);
+//     res.status(400).json({ errorMessage: "문제가 발생했습니다" });
+//   }
+// };

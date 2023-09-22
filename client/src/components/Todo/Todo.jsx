@@ -1,11 +1,40 @@
 import { useRef, useState } from "react";
 import TodoBoard from "./TodoBoard";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  input {
+    border: 2px solid transparent;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+      rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    padding: 0.3em 0.4em;
+    margin-right: 10px;
+    border-radius: 2px;
+    &:focus {
+      outline: 2px solid dodgerblue;
+    }
+  }
+  .input-wrapper {
+    display: flex;
+  }
+  button {
+    background: dodgerblue;
+    border: none;
+    padding: 0.5em 0.6em;
+    border-radius: 5px;
+    color: white;
+    margin-right: 10px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+`;
 
 export default function Todo() {
   const [todoValue, setTodoValue] = useState("");
   const [todoList, setTodoList] = useState([]);
   const nextId = useRef(1);
-  console.log(todoList);
 
   // 할일 입력값이 바뀔때 함수
   const handleChangeInputItem = (e) => {
@@ -30,20 +59,24 @@ export default function Todo() {
   };
 
   return (
-    <>
-      <h1>To Do List</h1>
-      <input
-        type="text"
-        placeholder="할 일을 입력하세요"
-        value={todoValue}
-        onChange={handleChangeInputItem}
-      />
-      <button onClick={handleClickAddList}>추가</button>
-      <TodoBoard
-        todoList={todoList}
-        onDelete={handleChangeDeleteItem}
-        onEdit={handleEditItem}
-      />
-    </>
+    <Wrapper>
+      <div>
+        <h3>To Do List</h3>
+        <div className="input-wrapper">
+          <input
+            type="text"
+            placeholder="할 일을 입력하세요"
+            value={todoValue}
+            onChange={handleChangeInputItem}
+          />
+          <button onClick={handleClickAddList}>추가</button>
+        </div>
+        <TodoBoard
+          todoList={todoList}
+          onDelete={handleChangeDeleteItem}
+          onEdit={handleEditItem}
+        />
+      </div>
+    </Wrapper>
   );
 }

@@ -23,6 +23,7 @@ const s3 = new S3Client({
 
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import { uploadprofile } from "../controllers/user.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // const storage = multer.diskStorage({
@@ -35,13 +36,24 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 //   },
 // });
 
-const upload = multer({
+const uploadPostS3 = multer({
   storage: multerS3({
     s3: s3,
     bucket: "cat-project-bucket",
     acl: "public-read",
     key: function (req, file, cb) {
       cb(null, `post/${Date.now()}${path.extname(file.originalname)}`);
+    },
+  }),
+});
+
+const uploadProfileS3 = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "cat-project-bucket",
+    acl: "public-read",
+    key: function (req, file, cb) {
+      cb(null, `profile/${Date.now()}${path.extname(file.originalname)}`);
     },
   }),
 });
@@ -66,7 +78,6 @@ apiRouter.post("/register", async (req, res, next) => {
   }
 
   const checkUserName = await User.findOne({ userName });
-  console.log(checkUserName);
   if (checkUserName) {
     return res.json({
       success: false,
@@ -86,8 +97,9 @@ apiRouter.post("/register", async (req, res, next) => {
 
 apiRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password);
 
-  const user = await User.findOne({ email });
+  let user = await User.findOne({ email });
 
   if (!user) {
     return res.json({
@@ -102,17 +114,28 @@ apiRouter.post("/login", async (req, res) => {
       errorMessage: "wrongPassword",
     });
   }
+  user = await User.findOne({ email }).select("-password");
+
   res.status(201).json({ success: true, loggedIn: true, user: user });
 });
 
-apiRouter.post("/upload/userImage", upload.single("userImage"), (req, res) => {
-  console.log(req);
-});
+apiRouter.post(
+  "/users/:shortId/profile-image",
+  uploadProfileS3.single("file"),
+  uploadprofile
+);
 
-apiRouter.route("/posts").post(upload.single("file"), uploadPost).get(getPosts);
+apiRouter
+  .route("/posts")
+  .post(uploadPostS3.single("file"), uploadPost)
+  .get(getPosts);
 
 apiRouter.route("/posts/:shortId").get(getDetail);
 
-apiRouter.route("/posts/:shortId/comments").post(uploadComment);
-// .get(getComments);
+apiRouter
+  .route("/posts/:shortId/comments")
+  .post(uploadComment)
+  .get(getComments);
+
+// apiRouter.route("/posts/:shortId/comments/:commentId").delete(deleteComment);
 export default apiRouter;

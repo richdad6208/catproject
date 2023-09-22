@@ -1,39 +1,36 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
-const Wrapper = styled.div``;
+import { useQuery } from "@tanstack/react-query";
+import { getRandomImage } from "../api/random";
+import { useEffect, useState } from "react";
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .image-container {
+    img {
+      object-fit: cover;
+    }
+  }
+`;
 
 function Photo() {
-  const [image, setImage] = useState({});
+  const [imageUrl, setImageUrl] = useState("");
+  const { data, refetch } = useQuery({
+    queryKey: ["random"],
+    queryFn: getRandomImage,
+  });
   useEffect(() => {
-    axios.get("https://api.thecatapi.com/v1/images/search").then((res) => {
-      setImage(res.data[0]);
-    });
-  }, []);
-  function choiceImage() {
-    const rawBody = JSON.stringify({
-      image_id: image.id,
-      sub_id: "1",
-    });
-    console.log(rawBody);
-    axios("https://api.thecatapi.com/v1/favourites", {
-      method: "post",
-      headers: { "x-api-key": import.meta.env.VITE_CAT_APIKEY },
-      body: rawBody,
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  }
-  function refreshImage() {
-    axios
-      .get("https://api.thecatapi.com/v1/images/search")
-      .then((res) => setImage(res.data[0]));
-  }
+    if (data) {
+      setImageUrl(data[0].url);
+    }
+  }, [data]);
   return (
     <Wrapper>
-      <img src={image.url} alt="" />
-      <button onClick={refreshImage}>새로고침</button>
-      <button onClick={choiceImage}>찜하기</button>
+      <p>이미지 클릭시 다음 이미지로 넘어갑니다</p>
+      <div className="image-container">
+        <img src={imageUrl} alt="" onClick={() => refetch()} />
+      </div>
     </Wrapper>
   );
 }

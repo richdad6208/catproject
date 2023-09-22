@@ -31,6 +31,16 @@ function Register() {
   }
   return (
     <Wrapper>
+      <p
+        style={{
+          textAlign: "center",
+          marginInline: "auto",
+          wordBreak: "keep-all",
+        }}
+      >
+        비밀번호는 해쉬로 처리하여 안전합니다. 시연시간 15분 후 데이터베이스
+        초기화 및 서버 닫을 예정입니다.
+      </p>
       <h2>회원가입</h2>
       {validation === "wrongEmail" ? (
         <p className="errorMessage">사용 중인 이메일입니다.</p>
