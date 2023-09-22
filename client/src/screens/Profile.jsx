@@ -118,8 +118,8 @@ function Profile() {
             <p className="user__body">이름: {userData.userName}</p>
           </div>
         </div>
+        <Todo />
       </Wrapper>
-      <Todo />
     </>
   );
 }

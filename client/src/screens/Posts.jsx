@@ -51,7 +51,8 @@ function Posts() {
       .get("/api/posts")
       .then((response) => {
         if (response.data.success) {
-          setPosts(response.data.posts);
+          let temp = [...response.data.posts];
+          setPosts(temp.reverse());
         } else {
           console.log("포스트들을 불러오지 못했습니다");
         }
@@ -74,6 +75,7 @@ function Posts() {
                 className="image-wrapper"
                 key={idx}
                 onClick={() => {
+                  console.log(item.shortId);
                   navigate(item.shortId);
                 }}
               >
