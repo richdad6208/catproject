@@ -19,7 +19,6 @@ export const uploadPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   const posts = await Post.find({});
-
   res.status(200).json({ success: true, posts });
 };
 

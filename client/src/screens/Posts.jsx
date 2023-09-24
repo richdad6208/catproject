@@ -42,6 +42,7 @@ function Posts() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    console.log(posts);
     if (!isLoggedIn) {
       alert("로그인이 필요한 서비스입니다");
       navigate("/login");
@@ -69,17 +70,16 @@ function Posts() {
         </Link>
         {posts.length ? null : <h2>현재 등록된 글이 없습니다</h2>}
         <ImageGrid>
-          {posts?.map((item, idx) => {
+          {posts.map((item, idx) => {
             return (
-              <div
-                className="image-wrapper"
-                key={idx}
-                onClick={() => {
-                  console.log(item.shortId);
-                  navigate(item.shortId);
-                }}
-              >
-                {<img src={item.imageUrl} alt="" />}
+              <div className="image-wrapper" key={idx}>
+                <img
+                  src={item.imageUrl}
+                  alt=""
+                  onClick={() => {
+                    navigate(`/posts/${item.shortId}`);
+                  }}
+                />
               </div>
             );
           })}
